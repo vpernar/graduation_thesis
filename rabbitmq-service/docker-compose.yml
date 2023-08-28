@@ -1,0 +1,25 @@
+version: '3.6'
+
+services:
+  rabbitmq:
+    image: rabbitmq:3-management-alpine
+    container_name: 'rabbitmq'
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    volumes:
+      - type: bind
+        source: ./rabbitmq-enabled-plugins
+        target: /etc/rabbitmq/enabled_plugins
+      - type: bind
+        source: ./rabbitmq.conf
+        target: /etc/rabbitmq/rabbitmq.conf
+      - type: bind
+        source: ./definitions.json
+        target: /etc/rabbitmq/definitions.json
+    networks:
+      - rabbitmq_go_net
+
+networks:
+  rabbitmq_go_net:
+    driver: bridge

@@ -1,0 +1,16 @@
+server:
+  port: 8084
+
+spring:
+  rabbitmq:
+    username: admin
+    password: admin
+
+rabbit:
+  exchange: orchestration-exchange
+  routing-key: order-updated
+
+service:
+  endpoint:
+    inventory: http://localhost:8083/inventory
+    payment: http://localhost:8082/payment
