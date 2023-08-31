@@ -22,6 +22,7 @@ public class OrderEventUpdateService {
 
             purchaseOrder.setStatus(orchestratorResponseDto.getStatus());
             purchaseOrderRepository.save(purchaseOrder);
+            log.info("Updated order status {}", purchaseOrder);
         } catch (NotFoundException e) {
             log.error("Unable to save purchase order: {}", e.getMessage());
         }

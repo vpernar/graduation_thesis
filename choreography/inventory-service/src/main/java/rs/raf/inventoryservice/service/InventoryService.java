@@ -29,6 +29,7 @@ public class InventoryService {
                 .filter(orderInventory -> orderInventory.getAvailableInventory() > 0)
                 .map(orderInventory -> {
                     orderInventory.setAvailableInventory(orderInventory.getAvailableInventory() - 1);
+                    inventoryRepository.save(orderInventory);
                     consumptionRepository.save(OrderInventoryConsumption.of(
                             orderEvent.getPurchaseOrder().getOrderId(),
                             orderEvent.getPurchaseOrder().getProductId(),
@@ -44,10 +45,11 @@ public class InventoryService {
         consumptionRepository.findById(orderEvent.getPurchaseOrder().getOrderId())
                 .ifPresent(orderInventoryConsumption -> {
                     inventoryRepository.findById(orderInventoryConsumption.getProductId())
-                            .ifPresent(orderInventory ->
-                                    orderInventory.setAvailableInventory(
-                                            orderInventory.getAvailableInventory() + orderInventoryConsumption.getQuantityConsumed())
-                            );
+                            .ifPresent(orderInventory -> {
+                                orderInventory.setAvailableInventory(
+                                        orderInventory.getAvailableInventory() + orderInventoryConsumption.getQuantityConsumed());
+                                inventoryRepository.save(orderInventory); //?
+                            });
                     consumptionRepository.delete(orderInventoryConsumption);
                 });
     }

@@ -31,6 +31,7 @@ public class OrderService {
     @Transactional
     public PurchaseOrder createOrder(OrderRequestDto orderRequestDto) {
         PurchaseOrder purchaseOrder = purchaseOrderRepository.save(dtoToEntity(orderRequestDto));
+        log.info("Created order: {}", purchaseOrder);
         orderRequestDto.setOrderId(purchaseOrder.getId());
 
         orderEventSender.emitEvent(

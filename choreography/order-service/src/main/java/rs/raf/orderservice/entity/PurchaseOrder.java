@@ -1,8 +1,6 @@
 package rs.raf.orderservice.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Version;
+import jakarta.persistence.*;
 import lombok.*;
 import rs.raf.events.inventory.InventoryStatus;
 import rs.raf.events.order.OrderStatus;
@@ -23,11 +21,10 @@ public class PurchaseOrder {
     private Integer userId;
     private Integer productId;
     private Integer price;
+    @Enumerated(EnumType.STRING)
     private OrderStatus orderStatus;
+    @Enumerated(EnumType.STRING)
     private PaymentStatus paymentStatus;
+    @Enumerated(EnumType.STRING)
     private InventoryStatus inventoryStatus;
-
-    @Version
-    private int version;
-
 }

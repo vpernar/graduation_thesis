@@ -19,7 +19,7 @@ public class OrderEventSender {
         MessageProperties messageProperties = new MessageProperties();
         messageProperties.setContentType(MessageProperties.CONTENT_TYPE_JSON);
         try {
-            log.info("Sending event to routing key: {}", routingKey);
+            log.info("Sending event to order-service");
             rabbitTemplate.send(exchange, routingKey, new Message(objectMapper.writeValueAsBytes(object), messageProperties));
         } catch (Exception e) {
             log.error("Error sending message to RabbitMQ: {}", e.getMessage(), e);

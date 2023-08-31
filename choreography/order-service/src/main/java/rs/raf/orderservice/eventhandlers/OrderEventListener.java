@@ -17,17 +17,15 @@ public class OrderEventListener {
     private final OrderStatusUpdateEventHandler eventHandler;
 
     @RabbitListener(queues = "payment-event")
-    public void orderUpdateEventListenerFromPayment(PaymentEvent paymentEvent) {
+    public synchronized void orderUpdateEventListenerFromPayment(PaymentEvent paymentEvent) {
         log.info("Received event {}", paymentEvent);
-        eventHandler.updateOrder(paymentEvent.getPayment().getOrderId(),
-                paymentEvent.getPaymentStatus());
+        eventHandler.updateOrder(paymentEvent.getPayment().getOrderId(), paymentEvent.getPaymentStatus());
     }
 
     @RabbitListener(queues = "inventory-event")
-    public void orderUpdateEventListenerFromInventory(InventoryEvent inventoryEvent) {
+    public synchronized void orderUpdateEventListenerFromInventory(InventoryEvent inventoryEvent) {
         log.info("Received event {}", inventoryEvent);
-        eventHandler.updateOrder(inventoryEvent.getInventory().getOrderId(),
-                inventoryEvent.getStatus());
+        eventHandler.updateOrder(inventoryEvent.getInventory().getOrderId(), inventoryEvent.getStatus());
     }
 
 }

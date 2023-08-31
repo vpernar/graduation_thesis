@@ -40,8 +40,10 @@ public class OrchestratorService {
 
         OrchestratorResponseDto orchestratorResponseDto;
         if (anyStepFailed) {
+            log.info("Reverting order: {}", orchestratorRequestDto);
             orchestratorResponseDto = revertOrder(orderWorkflow, orchestratorRequestDto);
         } else {
+            log.info("Resolved order: {}", orchestratorRequestDto);
             orchestratorResponseDto = getResponseDto(orchestratorRequestDto, OrderStatus.ORDER_COMPLETED);
         }
 
@@ -63,7 +65,7 @@ public class OrchestratorService {
     private Workflow getOrderWorkflow(OrchestratorRequestDto orchestratorRequestDto) {
         WorkflowStep paymentStep = new PaymentStep(paymentClient, getPaymentRequestDto(orchestratorRequestDto));
         WorkflowStep inventoryStep = new InventoryStep(inventoryClient, getInventoryRequestDto(orchestratorRequestDto));
-        return new OrderWorkflow(List.of(paymentStep, inventoryStep));
+        return new OrderWorkFlow(List.of(paymentStep, inventoryStep));
     }
 
     private OrchestratorResponseDto getResponseDto(OrchestratorRequestDto orchestratorRequestDto, OrderStatus status) {
